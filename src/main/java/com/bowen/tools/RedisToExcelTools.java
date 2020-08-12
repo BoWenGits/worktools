@@ -15,9 +15,9 @@ import redis.clients.jedis.ScanResult;
  * @author jintao
  *
  */
-public class RedisToExcelTools {
+public class RedisToExcelTools extends WorkTools {
 	
-	public static void main(String[] args) {
+	public void start(){
 		//Jedis jedis =new Jedis("127.0.0.1",6379);
 		Scanner scanner = new Scanner(System.in);
 		System.out.print(">>> 输入需要导出库的IP：");
@@ -28,7 +28,7 @@ public class RedisToExcelTools {
 			jedis.auth(password);
 		}
 		
-		System.out.print(">>> 输入需要导出的库：");
+		System.out.print(">>> 输入需要导出的库[请输入:0/1/2/3 ...]：");
 		int dbport = Integer.parseInt(scanner.nextLine());
 		jedis.select(dbport);
 		
@@ -46,8 +46,8 @@ public class RedisToExcelTools {
 	public static void readallRediskeys(Jedis jedis,int dbport) throws IOException {
         Set<?> s = jedis.keys("*");
         Iterator<?> it = s.iterator();
-        String FILEPATH = "/home/";
-        FileWriter writer = new FileWriter(FILEPATH + "export_"+dbport+".txt", true);        
+        String FILEPATH = "./";
+        FileWriter writer = new FileWriter(FILEPATH + "redis导出_数据库_"+dbport+".txt", true);
         while(it.hasNext()) {
             String key = (String) it.next();
             String value = jedis.get(key);
